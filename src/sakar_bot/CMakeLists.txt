@@ -41,7 +41,7 @@ install(TARGETS mission_planner
 # INSTALL SHARE FILES
 # ------------------------------------------
 install(
-  DIRECTORY urdf launch rviz world config maps models missions
+  DIRECTORY urdf launch rviz world config models missions
   DESTINATION share/${PROJECT_NAME}/
 )
 
