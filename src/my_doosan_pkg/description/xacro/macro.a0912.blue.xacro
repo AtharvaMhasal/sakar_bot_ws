@@ -1,0 +1,316 @@
+<?xml version="1.0"?>
+
+<robot name="a0912" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<!-- I did some modifications concerning the original file-->
+	<!-- The  damping and friction where added in each joint-->
+	<!-- The created added, and called the gazebo_config_control.xacro -->
+	<!-- The created added, and called the bumper_config.xacro -->
+	<!-- Mass set to near-zero and gravity disabled for pure visual display -->
+
+	<xacro:include filename="$(find my_doosan_pkg)/description/xacro/macro.gazebo_config_control.xacro" />
+	<xacro:include filename="$(find my_doosan_pkg)/description/xacro/macro.transmission.xacro" />
+	<xacro:include filename="$(find my_doosan_pkg)/description/xacro/macro.internal_config.xacro" />
+	<xacro:include filename="$(find my_doosan_pkg)/description/xacro/macro.bumper_config.xacro" />
+
+
+	<xacro:macro name="a0912" params="namespace">
+		
+		<!-- Base -->
+		<link name="base_0">
+			<inertial>
+				<mass value="0.001"/>
+				<origin xyz="0.0 0.0 0.0"/>
+				<inertia ixx="0.000001" ixy="0.0" ixz="0.0" iyy="0.000001"
+					iyz="0.0"
+					izz="0.000001"/>
+			</inertial>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_0_0.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+			<collision>
+        		<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_0_0.dae" scale="0.001 0.001 0.001" />
+        		</geometry>
+      		</collision>
+		</link>
+
+		<!-- Disable gravity for base_0 -->
+		<gazebo reference="base_0">
+			<gravity>false</gravity>
+			<static>false</static>
+		</gazebo>
+
+
+		<!-- joint 1 -->
+		<joint name="joint1" type="fixed">
+			<parent link="base_0" />
+			<child link="link1" />
+			<origin rpy="0 0 0" xyz="0 0 0.195" />
+			<axis xyz="0 0 1" />
+		</joint>
+
+
+		<!-- Link 1 -->
+		<link name="link1">
+			<inertial>
+				<mass value="0.001"/>
+				<origin xyz="0.0 0.0 0.0"/>
+				<inertia ixx="0.000001" ixy="0.0" ixz="0.0" iyy="0.000001"
+					iyz="0.0"
+					izz="0.000001"/>
+			</inertial>
+            <collision>
+                <geometry>
+                    <cylinder radius="0.08" length="0.2"/>
+                </geometry>
+            </collision>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_1_0.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+            <visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_1_1.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+            <visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_1_2.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+		</link>
+
+		<!-- Disable gravity for link1 -->
+		<gazebo reference="link1">
+			<gravity>false</gravity>
+		</gazebo>
+
+
+		<!-- joint2 -->
+		<joint name="joint2" type="fixed">
+			<parent link="link1" />
+			<child link="link2" />
+			<origin rpy="0 -1.571 -1.571" xyz="0 0.039 0" />
+			<axis xyz="0 0 1" />
+		</joint>
+		
+
+		<!-- Link 2 -->
+		<link name="link2">
+			<inertial>
+				<mass value="0.001"/>
+				<origin xyz="0.0 0.0 0.0"/>
+				<inertia ixx="0.000001" ixy="0.0" ixz="0.0" iyy="0.000001" iyz="0.0"
+					izz="0.000001"/>
+			</inertial>
+            <collision>
+                <origin rpy="0 -1.571 0" xyz="0.3 0 0.1525" />
+                <geometry>
+                    <cylinder radius="0.08" length="0.6"/>
+                </geometry>
+            </collision>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_2_0.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_2_1.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_2_2.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+		</link>
+
+		<!-- Disable gravity for link2 -->
+		<gazebo reference="link2">
+			<gravity>false</gravity>
+		</gazebo>
+
+
+		<!-- joint3 -->
+		<joint name="joint3" type="fixed">
+			<parent link="link2" />
+			<child link="link3" />
+			<origin rpy="0 0 1.571" xyz="0.56 0 0" />
+			<axis xyz="0 0 1" />
+		</joint>
+		
+
+		<!-- Link 3 -->
+		<link name="link3">
+			<inertial>
+				<mass value="0.001"/>
+				<origin xyz="0.0 0.0 0.0"/>
+				<inertia ixx="0.000001" ixy="0.0" ixz="0.0" iyy="0.000001"
+					iyz="0.0"
+					izz="0.000001"/>
+			</inertial>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_3_0.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+            <visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_3_1.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+		</link>
+
+		<!-- Disable gravity for link3 -->
+		<gazebo reference="link3">
+			<gravity>false</gravity>
+		</gazebo>
+
+
+		<!-- joint4 -->
+		<joint name="joint4" type="fixed">
+			<parent link="link3" />
+			<child link="link4" />
+			<origin rpy="1.571 0 0" xyz="0 -0.516 0" />
+			<axis xyz="0 0 1" />
+		</joint>
+
+
+		<!-- Link 4 -->
+		<link name="link4">
+			<inertial>
+				<mass value="0.001"/>
+				<origin xyz="0.0 0.0 0.0"/>
+				<inertia ixx="0.000001" ixy="0.0" ixz="0.0" iyy="0.000001" iyz="0.0"
+					izz="0.000001"/>
+			</inertial>
+            <collision>
+                <origin rpy="-0.46 0 0" xyz="0 0.075 -0.2" />
+                <geometry>
+                    <cylinder radius="0.05" length="0.4"/>
+                </geometry>
+            </collision>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_4_0.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+            <visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_4_1.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+		</link>
+
+		<!-- Disable gravity for link4 -->
+		<gazebo reference="link4">
+			<gravity>false</gravity>
+		</gazebo>
+
+
+		<!-- joint5 -->
+		<joint name="joint5" type="fixed">
+			<parent link="link4" />
+			<child link="link5" />
+			<origin rpy="-1.571 0 0" xyz="0 0 0" />
+			<axis xyz="0 0 1" />
+		</joint>
+
+
+		<!-- Link 5 -->
+		<link name="link5">
+			<inertial>
+				<mass value="0.001"/>
+				<origin xyz="0.0 0.0 0.0"/>
+				<inertia ixx="0.000001" ixy="0.0" ixz="0.0" iyy="0.000001"
+					iyz="0.0"
+					izz="0.000001"/>
+			</inertial>
+            <collision>
+                <origin rpy="1.571 0 0" xyz="0 0 0" />
+                <geometry>
+                    <cylinder radius="0.06" length="0.15"/>
+                </geometry>
+            </collision>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_5_0.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+            <visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_5_1.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+		</link>
+
+		<!-- Disable gravity for link5 -->
+		<gazebo reference="link5">
+			<gravity>false</gravity>
+		</gazebo>
+
+
+		<!-- joint6 -->
+		<joint name="joint6" type="fixed">
+			<parent link="link5" />
+			<child link="link6" />
+			<origin rpy="1.571 0 0" xyz="0 -0.124 0" />
+			<axis xyz="0 0 1" />
+		</joint>
+
+
+		<!-- Link 6 -->
+		<link name="link6">
+			<inertial>
+				<mass value="0.001"/>
+				<origin xyz="0.0 0.0 0.0"/>
+				<inertia ixx="0.000001" ixy="0.0" ixz="0.0" iyy="0.000001"
+					iyz="0.0"
+					izz="0.000001"/>
+			</inertial>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0" />
+				<geometry>
+					<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_6_0.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+			</visual>
+			<collision>
+        		<geometry>
+          			<mesh filename="file:///$(find my_doosan_pkg)/description/meshes/a0912_blue/A0912_6_0.dae" scale="0.001 0.001 0.001" />
+        		</geometry>
+      		</collision>
+		</link>
+
+		<!-- Disable gravity for link6 -->
+		<gazebo reference="link6">
+			<gravity>false</gravity>
+		</gazebo>
+
+
+		<!-- the following lines instantiates all the info described in the files:
+		 macro.gazebo_config_control.xacro, transmissions,  internal_config, macro.bumper_config  by david-->
+		<xacro:config_ctr_gazebo /> 
+		<xacro:dsr_transmission />
+		<xacro:dsr_config_coeff />
+		<xacro:bumper_ctr_sensor />
+
+	</xacro:macro>
+</robot>
