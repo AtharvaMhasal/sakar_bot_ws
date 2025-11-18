@@ -1,0 +1,386 @@
+<?xml version="1.0"?>
+
+<!-- xacro:property -->
+<xacro:property name="base_link_distance" value="0.1" />
+
+<xacro:property name="base_link_x" value="1.5" />
+<xacro:property name="base_link_y" value="1.0" />
+<xacro:property name="base_link_z" value="0.5" />
+<xacro:property name="base_link_mass" value="0.2" />
+
+<xacro:property name="front_face_link_x" value="0.1" />
+<xacro:property name="front_face_link_y" value="0.1" />
+<xacro:property name="front_face_link_z" value="0.1" /> 
+<xacro:property name="front_face_link_mass" value="0.1" />    
+
+<xacro:property name="wheel_link_radius" value="0.2" />
+<xacro:property name="wheel_link_length" value="0.1" />
+<xacro:property name="wheel_link_mass" value="0.2" />
+
+<xacro:property name="caster_link_radius" value="0.1" />
+<xacro:property name="caster_link_mass" value="0.2" />
+
+<xacro:property name="laser_scan_link_x" value="0.2" />
+<xacro:property name="laser_scan_link_y" value="0.2" />
+<xacro:property name="laser_scan_link_z" value="0.3" />
+<xacro:property name="laser_scan_link_mass" value="0.1" />
+
+
+<!-- Materials -->
+<material name="yellow">
+    <color rgba="0.8 0.8 0 1"/>
+</material>
+
+<material name="purple">
+    <color rgba="0.8 0 0.8 1"/>
+</material>
+
+<material name="brown">
+    <color rgba="0.8 0.4 0 1"/>
+</material>
+
+<material name="red">
+    <color rgba="1.0 0 0 1"/>
+</material>
+
+
+<!-- root - base_footprint -->
+<link name="base_footprint" >
+</link>
+
+
+<!-- base_link -->
+<joint name="base_footprint_to_base_link_joint" type="fixed">
+    <origin xyz="0 0 ${base_link_z/2+base_link_distance}" rpy="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+</joint>
+<link name="base_link" >
+    <visual>
+        <geometry>
+            <box size="${base_link_x} ${base_link_y} ${base_link_z}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="purple" />
+    </visual>
+
+    <collision>
+        <geometry>
+            <box size="${base_link_x} ${base_link_y} ${base_link_z}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+
+    <inertial>
+        <mass value="${base_link_mass}" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia    ixx="${base_link_mass*(base_link_y*base_link_y+base_link_z*base_link_z)/12}" ixy = "0" ixz = "0"
+                    iyy="${base_link_mass*(base_link_x*base_link_x+base_link_z*base_link_z)/12}" iyz = "0"
+                    izz="${base_link_mass*(base_link_x*base_link_x+base_link_z*base_link_z)/12}" />
+    </inertial>
+</link>
+<gazebo reference="base_link">
+    <material>Gazebo/Purple</material>
+</gazebo>
+
+
+<!-- front_face_link -->
+<joint name="base_link_to_front_face_link_joint" type="fixed">
+    <origin xyz="${base_link_x/2+front_face_link_x/2} 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="front_face_link"/>
+</joint>
+<link name="front_face_link" >
+    <visual>
+        <geometry>
+            <box size="${front_face_link_x} ${front_face_link_y} ${front_face_link_z}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="brown" />
+    </visual>
+
+    <collision>
+        <geometry>
+            <box size="${front_face_link_x} ${front_face_link_y} ${front_face_link_z}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+
+    <inertial>
+        <mass value="${front_face_link_mass}" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia    ixx="${front_face_link_mass*(front_face_link_y*front_face_link_y+front_face_link_z*front_face_link_z)/12}" ixy = "0" ixz = "0"
+                    iyy="${front_face_link_mass*(front_face_link_x*front_face_link_x+front_face_link_z*front_face_link_z)/12}" iyz = "0"
+                    izz="${front_face_link_mass*(front_face_link_x*front_face_link_x+front_face_link_z*front_face_link_z)/12}" />
+    </inertial>
+</link>
+<gazebo reference="front_face_link">
+    <material>Gazebo/Orange</material>
+</gazebo>
+
+
+<!-- left_wheel_link -->
+<joint name="base_link_to_left_wheel_link_joint" type="continuous">
+    <origin xyz="0 ${base_link_y/2} ${wheel_link_radius-(base_link_distance+base_link_z/2)}" 
+            rpy="-1.57 0 0"/>
+    <axis xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="left_wheel_link"/>
+</joint>
+<link name="left_wheel_link">
+    <visual>
+        <geometry>
+            <cylinder radius="${wheel_link_radius}" length="${wheel_link_length}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="yellow" />
+    </visual>
+
+    <collision>
+        <geometry>
+            <cylinder radius="${wheel_link_radius}" length="${wheel_link_length}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+
+    <inertial>
+        <mass value="${wheel_link_mass}" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia    ixx="${wheel_link_mass*(3*wheel_link_radius*wheel_link_radius+wheel_link_length*wheel_link_length)/12}" ixy = "0" ixz = "0"
+                    iyy="${wheel_link_mass*(3*wheel_link_radius*wheel_link_radius+wheel_link_length*wheel_link_length)/12}" iyz = "0"
+                    izz="${wheel_link_mass*(wheel_link_radius*wheel_link_radius)/2}" />
+    </inertial>
+</link>
+<gazebo reference="left_wheel_link">
+    <material>Gazebo/Yellow</material>
+</gazebo>
+
+
+<!-- right_wheel_link -->
+<joint name="base_link_to_right_wheel_link_joint" type="continuous">
+    <origin xyz="0 ${base_link_y/2*-1} ${wheel_link_radius-(base_link_distance+base_link_z/2)}" 
+            rpy="-1.57 0 0"/>
+    <axis xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="right_wheel_link"/>
+</joint>
+<link name="right_wheel_link" >
+    <visual>
+        <geometry>
+            <cylinder radius="${wheel_link_radius}" length="${wheel_link_length}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="yellow" />
+    </visual>
+
+    <collision>
+        <geometry>
+            <cylinder radius="${wheel_link_radius}" length="${wheel_link_length}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+
+    <inertial>
+        <mass value="${wheel_link_mass}" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia    ixx="${wheel_link_mass*(3*wheel_link_radius*wheel_link_radius+wheel_link_length*wheel_link_length)/12}" ixy = "0" ixz = "0"
+                    iyy="${wheel_link_mass*(3*wheel_link_radius*wheel_link_radius+wheel_link_length*wheel_link_length)/12}" iyz = "0"
+                    izz="${wheel_link_mass*(wheel_link_radius*wheel_link_radius)/2}" />
+    </inertial>
+</link> 
+<gazebo reference="right_wheel_link">
+    <material>Gazebo/Yellow</material>
+</gazebo>
+
+
+<!-- front_caster_link -->
+<joint name="base_link_to_front_caster_link_1_joint" type="continuous">
+    <origin xyz="${base_link_x/2-caster_link_radius} 0 ${base_link_z/2*-1}" 
+            rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="front_caster_link_1"/>
+</joint>
+<link name="front_caster_link_1" >
+    <visual>
+        <geometry>
+            <sphere radius="${caster_link_radius}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="yellow" />
+    </visual>
+
+    <collision>
+        <geometry>
+            <sphere radius="${caster_link_radius}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+
+    <inertial>
+        <mass value="${caster_link_mass}" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia    ixx="${2*caster_link_mass*caster_link_radius*caster_link_radius/5}" ixy = "0" ixz = "0"
+                    iyy="${2*caster_link_mass*caster_link_radius*caster_link_radius/5}" iyz = "0"
+                    izz="${2*caster_link_mass*caster_link_radius*caster_link_radius/5}" />
+    </inertial>
+</link>
+<gazebo reference="front_caster_link_1">
+    <material>Gazebo/Yellow</material>
+</gazebo>
+
+<!-- back_caster_link -->
+<joint name="base_link_to_back_caster_link_1_joint" type="continuous">
+    <origin xyz="${-base_link_x/2+caster_link_radius} 0 ${base_link_z/2*-1}" 
+            rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="back_caster_link_1"/>
+</joint>
+<link name="back_caster_link_1" >
+    <visual>
+        <geometry>
+            <sphere radius="${caster_link_radius}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="yellow" />
+    </visual>
+
+    <collision>
+        <geometry>
+            <sphere radius="${caster_link_radius}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+
+    <inertial>
+        <mass value="${caster_link_mass}" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia    ixx="${2*caster_link_mass*caster_link_radius*caster_link_radius/5}" ixy = "0" ixz = "0"
+                    iyy="${2*caster_link_mass*caster_link_radius*caster_link_radius/5}" iyz = "0"
+                    izz="${2*caster_link_mass*caster_link_radius*caster_link_radius/5}" />
+    </inertial>
+</link>
+<gazebo reference="back_caster_link_1">
+    <material>Gazebo/Yellow</material>
+</gazebo>
+
+
+<!-- Plug -in -->
+<!-- JOINT PUBLISHER -->
+<gazebo>
+    <plugin name="amr_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
+        <ros>
+            <remapping>~/out:=joint_states</remapping>
+        </ros>
+        <update_rate>30</update_rate>
+
+        <joint_name>base_link_to_left_wheel_link_joint</joint_name>
+        <joint_name>base_link_to_right_wheel_link_joint</joint_name>
+        <joint_name>base_link_to_front_caster_link_1_joint</joint_name>
+        <!-- <joint_name>front_caster_link_1_to_front_caster_link_2_joint</joint_name>
+        <joint_name>front_caster_link_2_to_front_caster_link_3_joint</joint_name> -->
+        <joint_name>base_link_to_back_caster_link_1_joint</joint_name>
+        <!-- <joint_name>rear_caster_link_1_to_rear_caster_link_2_joint</joint_name>
+        <joint_name>rear_caster_link_2_to_rear_caster_link_3_joint</joint_name> -->
+    </plugin>
+</gazebo>
+
+<!-- Differential drive -->
+<gazebo>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+        <!-- wheels -->
+        <left_joint>base_link_to_left_wheel_link_joint</left_joint>
+        <right_joint>base_link_to_right_wheel_link_joint</right_joint>
+
+        <!-- kinematics -->
+        <wheel_separation>1</wheel_separation>
+        <wheel_diameter>0.4</wheel_diameter>
+
+        <!-- limits -->
+        <max_wheel_torque>5</max_wheel_torque>
+        <max_wheel_acceleration>2.0</max_wheel_acceleration>
+
+        <!-- output -->
+        <publish_odom>true</publish_odom>
+        <publish_odom_tf>true</publish_odom_tf>
+
+        <odometry_frame>odom</odometry_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
+    </plugin>
+</gazebo>
+
+<!-- Lidar Sensor -->
+<joint name="base_link_to_laser_scan_link_joint" type="fixed">
+    <origin xyz="0 0 ${base_link_z/2+laser_scan_link_z/2}" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="laser_scan_link"/>
+</joint>
+<link name="laser_scan_link" >
+    <visual>
+        <geometry>
+            <box size="${laser_scan_link_x} ${laser_scan_link_y} ${laser_scan_link_z}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="red" />
+    </visual>
+
+    <collision>
+        <geometry>
+            <box size="${laser_scan_link_x} ${laser_scan_link_y} ${laser_scan_link_z}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+
+    <inertial>
+        <mass value="${laser_scan_link_mass}" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia    ixx="${laser_scan_link_mass*(laser_scan_link_y*laser_scan_link_y+laser_scan_link_z*laser_scan_link_z)/12}" ixy = "0" ixz = "0"
+                    iyy="${laser_scan_link_mass*(laser_scan_link_x*laser_scan_link_x+laser_scan_link_z*laser_scan_link_z)/12}" iyz = "0"
+                    izz="${laser_scan_link_mass*(laser_scan_link_x*laser_scan_link_x+laser_scan_link_z*laser_scan_link_z)/12}" />
+    </inertial>
+</link>
+<gazebo reference="laser_scan_link">
+    <material>Gazebo/Red</material>
+</gazebo>
+
+<joint name="laser_scan_link_to_laser_scan_frame_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="laser_scan_link"/>
+    <child link="laser_scan_frame"/>
+</joint>
+<link name="laser_scan_frame" >
+</link>
+
+
+<gazebo reference="laser_scan_frame">
+    <sensor name="sensor_ray" type="ray">
+        <pose>0 0 0 0 0 0 </pose>
+        <ray>
+            <scan>
+                <horizontal>
+                    <samples>360</samples>
+                    <resolution>1.0</resolution>
+                    <min_angle>-3.14</min_angle>
+                    <max_angle>3.14</max_angle>
+                </horizontal>
+            </scan>
+            <range>
+                <min>0.1</min>
+                <max>25.0</max>
+            </range>
+        </ray>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>100.0</update_rate>
+        <plugin name="laser" filename="libgazebo_ros_ray_sensor.so">
+            <ros>
+                <namespace>/box_bot</namespace>
+                <remapping>~/out:=laser_scan</remapping>
+            </ros>
+            <output_type>sensor_msgs/LaserScan</output_type>
+            <frame_name>laser_scan_frame</frame_name>
+        </plugin>
+    </sensor>
+</gazebo>

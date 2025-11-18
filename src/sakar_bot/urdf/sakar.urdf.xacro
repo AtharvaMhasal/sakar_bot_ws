@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="common_properties.xacro" />
+    
+    <xacro:include filename="mobile_base.xacro" />
+    <xacro:include filename="moblie_base_gazebo.xacro" />
+    
+    <xacro:include filename="camera.xacro" />
+
+<!-- Load Doosan A0912 Arm -->
+    <xacro:include filename="$(find my_doosan_pkg)/description/xacro/a0912.urdf.xacro"/>
+    
+    
+    
+ <!-- We mount ONLY the Doosan arm base_0 -->
+    <joint name="arm_mount_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_0"/>
+        <origin xyz="0.0 0.0 0.2" rpy="0 0 0"/>
+    </joint>
+    
+</robot>
