@@ -1,4 +1,3 @@
-
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 
@@ -21,21 +20,22 @@ using NavigateAction = nav2_msgs::action::NavigateToPose;
 using SpawnSrv = gazebo_msgs::srv::SpawnEntity;
 using DeleteSrv = gazebo_msgs::srv::DeleteEntity;
 
+// Finite State Machine states for mission control
 enum class MissionState {
-  SPAWN_BOX,
-  NAV_TO_PICK,
-  MONITOR_NAV_PICK,  
-  MOCK_PICK,
-  SPAWN_ATTACHED,
-  NAV_TO_DROP,
-  MONITOR_NAV_DROP,
-  MOCK_DROP,
-  SPAWN_DROP,
-  NAV_HOME,
-  MONITOR_NAV_HOME,
-  DONE,
-  FAILED,
-  IDLE
+  SPAWN_BOX,          // Spawn box at pick location
+  NAV_TO_PICK,        // Navigate to pick location
+  MONITOR_NAV_PICK,   // Monitor navigation progress to pick
+  MOCK_PICK,          // Simulate pick operation 
+  SPAWN_ATTACHED,     // Spawn box attached to robot (visual representation)
+  NAV_TO_DROP,        // Navigate to drop location
+  MONITOR_NAV_DROP,   // Monitor navigation progress to drop
+  MOCK_DROP,          // Simulate drop operation 
+  SPAWN_DROP,         // Spawn box at drop location (visual confirmation)
+  NAV_HOME,           // Navigate back to home position
+  MONITOR_NAV_HOME,   // Monitor navigation progress to home
+  DONE,               // Mission completed successfully
+  FAILED,             // Mission failed
+  IDLE                // Mission idle/ready state
 };
 
 class MissionPlanner : public rclcpp::Node

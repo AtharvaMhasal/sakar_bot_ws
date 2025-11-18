@@ -64,6 +64,7 @@ This project implements a complete mobile manipulation system for ROS2 Humble as
 git clone https://github.com/your-username/sakar_bot_ws.git
 cd sakar_bot_ws
 
+
 # Build the workspace
 colcon build --symlink-install
 
