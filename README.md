@@ -22,7 +22,7 @@ This project implements a complete mobile manipulation system for ROS2 Humble as
 
 ## 📋 Assignment Requirements Fulfilled
 
-### ✅ Mobile Manipulator Integration
+### ✅ Mobile Base and Robotic Arm Integration
 - Custom URDF robot model with mobile base
 - Industrial warehouse environment simulation
 - Arm integration with the Robot
